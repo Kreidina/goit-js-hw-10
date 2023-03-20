@@ -18,3 +18,41 @@ body {
   max-width: 320px;
   margin-bottom: 16px;
 }
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul {
+  margin: 0;
+  padding: 0;
+}
+.name-title{
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+
+}
+.name-country{
+  font-size: 15px;
+  margin-left: 5px;
+}
+.title{
+  font-size: 25px;
+  margin-left: 8px;
+}
+.name__list{
+  margin-top: 25px;
+}
+.info__item{
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.value{
+  font-weight: 400;
+  margin-left: 7px;
+
+}
