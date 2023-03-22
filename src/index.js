@@ -18,38 +18,41 @@ refs.input.addEventListener('input', throttle(onInput, DEBOUNCE_DELAY));
 
 function onInput() {
   searchField = refs.input.value.trim();
-  if(searchField.length === 0){
-    return refs.list.innerHTML = '', refs.info.innerHTML = '';;
+  if (searchField.length === 0) {
+    return (refs.list.innerHTML = ''), (refs.info.innerHTML = '');
   }
-  fetchCountries(searchField)
-    .then(countries => {
-      refs.list.innerHTML = '';
-      refs.info.innerHTML = '';
-      arrayCountries = countries;
-         if (arrayCountries.length >= 1) {
-        countries.map(country => {
-          appendMarkup(country);
-        });
-      } else {
-        refs.list.innerHTML = '';
-        refs.info.innerHTML = '';
-      }
-      if (arrayCountries.length > 10) {
-        Notiflix.Notify.info('Too many matches found. Please enter a more specific name.');
-      }
-    })
-    .catch(error => { 
-        if(error.message === 'Network response was not ok'){
-        Notiflix.Notify.failure('Oops, there is no country with that name'); 
-        }
-    });
+  fetchCountries(searchField).then(appendMarkupCounrty).catch(errorMarkup);
 }
 
+function appendMarkupCounrty(countries) {
+  refs.list.innerHTML = '';
+  refs.info.innerHTML = '';
+  arrayCountries = countries;
+  if (arrayCountries.length >= 1) {
+    countries.map(country => {
+      appendMarkup(country);
+    });
+  } else {
+    refs.list.innerHTML = '';
+    refs.info.innerHTML = '';
+  }
+  if (arrayCountries.length > 10) {
+    Notiflix.Notify.info(
+      'Too many matches found. Please enter a more specific name.'
+    );
+  }
+}
+
+function errorMarkup(error) {
+  if (error.message === 'Network response was not ok') {
+    Notiflix.Notify.failure('Oops, there is no country with that name');
+  }
+}
 
 function appendMarkup(country) {
   const { name, flags, capital, population, languages } = country;
   const language = Object.values(languages).join(', ');
- 
+
   const listOfCountries = `
     <div class = 'name-title'>    
         <img class = 'flag-img' width = '30' height = '20' src = ${flags.svg}>
@@ -68,10 +71,10 @@ function appendMarkup(country) {
     </ul>`;
 
     if (arrayCountries.length > 10) {
-        return;
-  } else if (arrayCountries.length > 1) {
-    refs.list.insertAdjacentHTML('beforeend', listOfCountries);
-  }else{
-    refs.info.insertAdjacentHTML('beforeend', infoAboutCountries);
-  }
+      return;
+    } else if (arrayCountries.length > 1) {
+      refs.list.insertAdjacentHTML('beforeend', listOfCountries);
+    } else {
+      refs.info.insertAdjacentHTML('beforeend', infoAboutCountries);
+    }
 }
